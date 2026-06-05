@@ -1,0 +1,560 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Brazo Robótico Hidráulico — V Feria de Ciencias IIPA 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --azul: #0d3b6e;
+    --azul-mid: #1a5fa8;
+    --azul-light: #e8f2fd;
+    --acento: #e8542a;
+    --crema: #faf8f4;
+    --gris: #5a5a6a;
+    --borde: #d0dce8;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--crema);
+    color: #1a1a2e;
+    line-height: 1.7;
+  }
+
+  /* HERO */
+  .hero {
+    background: var(--azul);
+    color: white;
+    padding: 0;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: -60px; right: -80px;
+    width: 400px; height: 400px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.04);
+  }
+  .hero::after {
+    content: '';
+    position: absolute;
+    bottom: -100px; left: -60px;
+    width: 300px; height: 300px;
+    border-radius: 50%;
+    background: rgba(26,95,168,0.3);
+  }
+  .hero-inner {
+    position: relative; z-index: 2;
+    max-width: 900px; margin: 0 auto;
+    padding: 56px 32px 48px;
+    display: grid; grid-template-columns: 1fr auto; gap: 40px; align-items: center;
+  }
+  .badge {
+    display: inline-block;
+    background: var(--acento);
+    color: white;
+    font-family: 'Syne', sans-serif;
+    font-size: 11px; font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    padding: 4px 14px;
+    border-radius: 20px;
+    margin-bottom: 16px;
+  }
+  .hero h1 {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(28px, 5vw, 46px);
+    font-weight: 800;
+    line-height: 1.1;
+    margin-bottom: 12px;
+  }
+  .hero h1 span { color: #7ec8f7; }
+  .hero-sub {
+    font-size: 15px;
+    color: rgba(255,255,255,0.72);
+    font-weight: 300;
+    max-width: 480px;
+  }
+  .hero-meta {
+    margin-top: 24px;
+    display: flex; flex-wrap: wrap; gap: 20px;
+  }
+  .meta-item {
+    display: flex; flex-direction: column; gap: 2px;
+  }
+  .meta-label {
+    font-size: 10px; text-transform: uppercase; letter-spacing: 0.1em;
+    color: rgba(255,255,255,0.45); font-weight: 500;
+  }
+  .meta-val {
+    font-size: 14px; color: rgba(255,255,255,0.9); font-weight: 400;
+  }
+
+  /* QR panel */
+  .qr-panel {
+    background: white;
+    border-radius: 16px;
+    padding: 20px;
+    display: flex; flex-direction: column; align-items: center; gap: 10px;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.25);
+    min-width: 160px;
+  }
+  .qr-panel canvas { border-radius: 6px; }
+  .qr-label {
+    font-size: 11px; color: var(--gris);
+    text-align: center; line-height: 1.4;
+    font-weight: 500;
+  }
+
+  /* MAIN CONTENT */
+  .content { max-width: 900px; margin: 0 auto; padding: 56px 32px; }
+
+  /* SECTION HEADINGS */
+  .section-tag {
+    font-family: 'Syne', sans-serif;
+    font-size: 10px; font-weight: 700; letter-spacing: 0.15em;
+    text-transform: uppercase; color: var(--azul-mid);
+    margin-bottom: 6px;
+  }
+  .section-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 24px; font-weight: 700; color: var(--azul);
+    margin-bottom: 20px; line-height: 1.2;
+  }
+
+  /* CARDS */
+  .card {
+    background: white;
+    border: 1px solid var(--borde);
+    border-radius: 14px;
+    padding: 28px 32px;
+    margin-bottom: 28px;
+  }
+  .card p { font-size: 15px; color: #3a3a4a; margin-bottom: 12px; }
+  .card p:last-child { margin-bottom: 0; }
+
+  /* OBJECTIVE LIST */
+  .obj-list { list-style: none; display: flex; flex-direction: column; gap: 12px; }
+  .obj-list li {
+    display: flex; gap: 14px; align-items: flex-start;
+    font-size: 15px; color: #3a3a4a;
+  }
+  .obj-num {
+    min-width: 28px; height: 28px;
+    background: var(--azul);
+    color: white;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Syne', sans-serif;
+    font-size: 12px; font-weight: 700;
+    flex-shrink: 0; margin-top: 1px;
+  }
+
+  /* PHYSICS GRID */
+  .physics-grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 16px; margin-top: 8px;
+  }
+  .phys-card {
+    background: var(--azul-light);
+    border-radius: 10px; padding: 20px;
+    border-left: 4px solid var(--azul-mid);
+  }
+  .phys-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 14px; font-weight: 700; color: var(--azul);
+    margin-bottom: 6px;
+  }
+  .phys-desc { font-size: 13px; color: var(--gris); line-height: 1.5; }
+
+  /* APPLICATIONS */
+  .app-grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 16px;
+  }
+  .app-card {
+    background: white; border: 1px solid var(--borde);
+    border-radius: 12px; padding: 20px;
+    position: relative; overflow: hidden;
+  }
+  .app-card::before {
+    content: '';
+    position: absolute; top: 0; left: 0; right: 0; height: 3px;
+    background: var(--acento);
+  }
+  .app-icon { font-size: 28px; margin-bottom: 10px; }
+  .app-name {
+    font-family: 'Syne', sans-serif;
+    font-size: 14px; font-weight: 700; color: var(--azul);
+    margin-bottom: 6px;
+  }
+  .app-desc { font-size: 13px; color: var(--gris); line-height: 1.5; }
+
+  /* ASSEMBLY STEPS */
+  .steps { display: flex; flex-direction: column; gap: 0; }
+  .step {
+    display: flex; gap: 20px; align-items: flex-start;
+    padding: 20px 0;
+    border-bottom: 1px solid var(--borde);
+  }
+  .step:last-child { border-bottom: none; }
+  .step-num {
+    min-width: 40px; height: 40px;
+    background: var(--azul); color: white;
+    border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Syne', sans-serif; font-weight: 800; font-size: 16px;
+    flex-shrink: 0;
+  }
+  .step-content h4 {
+    font-family: 'Syne', sans-serif;
+    font-size: 15px; font-weight: 700; color: var(--azul);
+    margin-bottom: 4px;
+  }
+  .step-content p { font-size: 14px; color: var(--gris); line-height: 1.55; }
+
+  /* MATERIALS */
+  .mat-list {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 10px;
+  }
+  .mat-item {
+    display: flex; gap: 10px; align-items: center;
+    font-size: 14px; color: #3a3a4a;
+    background: var(--crema); padding: 10px 14px; border-radius: 8px;
+    border: 1px solid var(--borde);
+  }
+  .mat-dot {
+    width: 8px; height: 8px; border-radius: 50%;
+    background: var(--acento); flex-shrink: 0;
+  }
+
+  /* TEAM */
+  .team-grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 14px;
+  }
+  .team-card {
+    background: white; border: 1px solid var(--borde);
+    border-radius: 12px; padding: 18px; text-align: center;
+  }
+  .avatar {
+    width: 48px; height: 48px; border-radius: 50%;
+    background: var(--azul); color: white;
+    font-family: 'Syne', sans-serif; font-weight: 700; font-size: 15px;
+    display: flex; align-items: center; justify-content: center;
+    margin: 0 auto 10px;
+  }
+  .team-name { font-size: 13px; font-weight: 500; color: var(--azul); line-height: 1.35; }
+
+  /* VIDEO LINK */
+  .video-link {
+    display: inline-flex; align-items: center; gap: 10px;
+    background: var(--acento); color: white;
+    font-family: 'Syne', sans-serif; font-weight: 700; font-size: 14px;
+    padding: 12px 24px; border-radius: 10px; text-decoration: none;
+    margin-top: 16px; transition: opacity 0.2s;
+  }
+  .video-link:hover { opacity: 0.88; }
+
+  /* BIBLIOGRAPHY */
+  .ref { font-size: 13px; color: var(--gris); margin-bottom: 8px; }
+  .ref a { color: var(--azul-mid); }
+
+  /* FOOTER */
+  footer {
+    background: var(--azul);
+    color: rgba(255,255,255,0.6);
+    text-align: center;
+    padding: 28px 16px;
+    font-size: 13px;
+  }
+  footer strong { color: white; }
+
+  /* DIVIDER */
+  .divider { border: none; border-top: 1px solid var(--borde); margin: 40px 0; }
+
+  @media (max-width: 600px) {
+    .hero-inner { grid-template-columns: 1fr; }
+    .qr-panel { display: none; }
+    .content { padding: 32px 18px; }
+    .card { padding: 20px; }
+  }
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="hero-inner">
+    <div>
+      <div class="badge">V Feria de Ciencias IIPA · 2026</div>
+      <h1>Brazo Robótico<br><span>Hidráulico</span><br>Medidor de Fuerza</h1>
+      <p class="hero-sub">Proyecto de física mecánica — Universidad de La Guajira, Ingeniería de Sistemas</p>
+      <div class="hero-meta">
+        <div class="meta-item">
+          <span class="meta-label">Asignatura</span>
+          <span class="meta-val">Física Mecánica</span>
+        </div>
+        <div class="meta-item">
+          <span class="meta-label">Semestre</span>
+          <span class="meta-val">II</span>
+        </div>
+        <div class="meta-item">
+          <span class="meta-label">Docente</span>
+          <span class="meta-val">Remberto Paternina Barboza</span>
+        </div>
+      </div>
+    </div>
+    <div class="qr-panel">
+      <canvas id="qrCanvas"></canvas>
+      <p class="qr-label">Escanea para ver<br>este proyecto</p>
+    </div>
+  </div>
+</header>
+
+<main class="content">
+
+  <!-- JUSTIFICATION -->
+  <div class="section-tag">Justificación</div>
+  <div class="section-title">¿Por qué este proyecto?</div>
+  <div class="card">
+    <p>Este proyecto busca aplicar los principios de la <strong>física mecánica</strong> mediante la construcción de un brazo robótico capaz de medir fuerza. Permite comprender conceptos como <em>fuerza aplicada, torque y equilibrio</em>, además de relacionar la teoría con aplicaciones tecnológicas reales.</p>
+    <p>Su desarrollo fortalece habilidades en ingeniería, programación y resolución de problemas, siendo útil en áreas como la industria y la automatización. El sistema hidráulico es especialmente relevante porque demuestra cómo la presión de un fluido puede transmitir y multiplicar fuerzas mecánicas de manera eficiente.</p>
+  </div>
+
+  <hr class="divider">
+
+  <!-- OBJECTIVES -->
+  <div class="section-tag">Objetivos</div>
+  <div class="section-title">Objetivo general y específicos</div>
+  <div class="card">
+    <p style="font-weight:500; color: var(--azul); margin-bottom:16px;">
+      🎯 Diseñar y construir un brazo robótico capaz de medir y analizar la fuerza aplicada en diferentes objetos.
+    </p>
+    <ul class="obj-list">
+      <li><span class="obj-num">1</span><span>Analizar el comportamiento de la fuerza y el torque en el brazo robótico durante su operación.</span></li>
+      <li><span class="obj-num">2</span><span>Diseñar un sistema que permita medir la fuerza aplicada mediante principios hidráulicos y mecánicos.</span></li>
+      <li><span class="obj-num">3</span><span>Evaluar la precisión del dispositivo en diferentes pruebas de carga y condiciones de operación.</span></li>
+    </ul>
+  </div>
+
+  <hr class="divider">
+
+  <!-- PHYSICS -->
+  <div class="section-tag">Fenómenos físicos</div>
+  <div class="section-title">Principios científicos involucrados</div>
+  <div class="physics-grid">
+    <div class="phys-card">
+      <div class="phys-title">⚡ Fuerza</div>
+      <div class="phys-desc">Según la Segunda Ley de Newton (F = ma), se analiza cómo la presión del fluido genera fuerzas que mueven los segmentos del brazo.</div>
+    </div>
+    <div class="phys-card">
+      <div class="phys-title">🔄 Torque</div>
+      <div class="phys-desc">El torque (τ = F × d) determina la capacidad de rotación en cada articulación. A mayor brazo de palanca, mayor torque generado con la misma fuerza.</div>
+    </div>
+    <div class="phys-card">
+      <div class="phys-title">⚖️ Equilibrio mecánico</div>
+      <div class="phys-desc">Para mantener posiciones estáticas, la suma de torques y fuerzas debe ser cero — principio clave en el diseño de brazos robóticos industriales.</div>
+    </div>
+    <div class="phys-card">
+      <div class="phys-title">💧 Hidráulica (Pascal)</div>
+      <div class="phys-desc">El principio de Pascal establece que la presión aplicada en un fluido se transmite por igual en todas las direcciones, permitiendo multiplicar fuerzas usando jeringas de diferente diámetro.</div>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- MATERIALS -->
+  <div class="section-tag">Construcción</div>
+  <div class="section-title">Materiales utilizados</div>
+  <div class="card">
+    <div class="mat-list">
+      <div class="mat-item"><span class="mat-dot"></span>Cartón corrugado (estructura)</div>
+      <div class="mat-item"><span class="mat-dot"></span>Palitos de madera (articulaciones)</div>
+      <div class="mat-item"><span class="mat-dot"></span>Jeringas plásticas (actuadores)</div>
+      <div class="mat-item"><span class="mat-dot"></span>Mangueras flexibles</div>
+      <div class="mat-item"><span class="mat-dot"></span>Agua (fluido de trabajo)</div>
+      <div class="mat-item"><span class="mat-dot"></span>Tornillos y remaches</div>
+      <div class="mat-item"><span class="mat-dot"></span>Pistola de silicona</div>
+      <div class="mat-item"><span class="mat-dot"></span>Base de madera MDF</div>
+      <div class="mat-item"><span class="mat-dot"></span>Cinta adhesiva de refuerzo</div>
+      <div class="mat-item"><span class="mat-dot"></span>Sensor de fuerza / báscula</div>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- ASSEMBLY -->
+  <div class="section-tag">Proceso de ensamblaje</div>
+  <div class="section-title">Etapas de construcción</div>
+  <div class="card">
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-content">
+          <h4>Diseño y planeación</h4>
+          <p>Se realizó el boceto del brazo identificando las articulaciones, el rango de movimiento y la cantidad de cilindros hidráulicos necesarios para cada eje.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-content">
+          <h4>Corte de la estructura de cartón</h4>
+          <p>Los segmentos del brazo (base, antebrazo y efector final) fueron cortados del cartón corrugado en capas superpuestas para aumentar la rigidez estructural.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-content">
+          <h4>Ensamblaje de articulaciones</h4>
+          <p>Los palitos de madera se usaron como ejes de rotación en cada articulación, asegurando libertad de movimiento controlado y suficiente resistencia a la carga.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">4</div>
+        <div class="step-content">
+          <h4>Instalación del sistema hidráulico</h4>
+          <p>Se conectaron las jeringas con mangueras, asegurando hermeticidad. Una jeringa actúa como pistón de entrada (control) y otra como pistón de salida (actuador del movimiento).</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">5</div>
+        <div class="step-content">
+          <h4>Llenado y purga de aire</h4>
+          <p>El sistema se llenó con agua y se purgó el aire para garantizar la transmisión eficiente de presión sin compresibilidad, siguiendo el principio de Pascal.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">6</div>
+        <div class="step-content">
+          <h4>Integración del sensor de fuerza</h4>
+          <p>Se incorporó una báscula digital en el extremo del efector para registrar la fuerza aplicada sobre los objetos, permitiendo correlacionar presión hidráulica con fuerza mecánica.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">7</div>
+        <div class="step-content">
+          <h4>Pruebas y calibración</h4>
+          <p>Se realizaron múltiples pruebas con objetos de diferente peso para verificar la precisión de la medición y ajustar la estabilidad de las articulaciones.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- APPLICATIONS -->
+  <div class="section-tag">Aplicaciones en el contexto</div>
+  <div class="section-title">¿Dónde se usa esta tecnología?</div>
+  <div class="app-grid">
+    <div class="app-card">
+      <div class="app-icon">🏗️</div>
+      <div class="app-name">Industria pesada</div>
+      <div class="app-desc">Excavadoras, grúas y prensas hidráulicas usan este principio para levantar y manipular materiales de gran peso con alta precisión.</div>
+    </div>
+    <div class="app-card">
+      <div class="app-icon">🤖</div>
+      <div class="app-name">Robótica moderna</div>
+      <div class="app-desc">Los brazos robóticos industriales en líneas de ensamblaje automotriz utilizan actuadores hidráulicos para movimientos de alta fuerza.</div>
+    </div>
+    <div class="app-card">
+      <div class="app-icon">🦾</div>
+      <div class="app-name">Prótesis y medicina</div>
+      <div class="app-desc">Las prótesis de miembros superiores incorporan sistemas similares para imitar movimientos naturales de la mano con control eficiente.</div>
+    </div>
+    <div class="app-card">
+      <div class="app-icon">📚</div>
+      <div class="app-name">Educación STEM</div>
+      <div class="app-desc">Herramienta pedagógica para comprender fuerza, torque, equilibrio e hidráulica de forma práctica y visual en el aula.</div>
+    </div>
+    <div class="app-card">
+      <div class="app-icon">🌾</div>
+      <div class="app-name">Agricultura</div>
+      <div class="app-desc">Los brazos hidráulicos en maquinaria agrícola como cosechadoras y tractores permiten movimientos precisos de herramientas de trabajo.</div>
+    </div>
+    <div class="app-card">
+      <div class="app-icon">🚀</div>
+      <div class="app-name">Aeroespacial</div>
+      <div class="app-desc">Los sistemas hidráulicos controlan flaps, tren de aterrizaje y superficies de control en aeronaves y vehículos espaciales.</div>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- TEAM -->
+  <div class="section-tag">Integrantes</div>
+  <div class="section-title">Equipo de trabajo</div>
+  <div class="team-grid">
+    <div class="team-card">
+      <div class="avatar">YB</div>
+      <div class="team-name">Yeiler Zair Bolaños Vergel</div>
+    </div>
+    <div class="team-card">
+      <div class="avatar">OC</div>
+      <div class="team-name">Owent Carranza Gamez</div>
+    </div>
+    <div class="team-card">
+      <div class="avatar">CG</div>
+      <div class="team-name">Cristian Eduardo Gamez Pushaina</div>
+    </div>
+    <div class="team-card">
+      <div class="avatar">YO</div>
+      <div class="team-name">Yeider David Banquet Oñate</div>
+    </div>
+    <div class="team-card">
+      <div class="avatar">HC</div>
+      <div class="team-name">Heleb Carmona</div>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- VIDEO -->
+  <div class="section-tag">Multimedia</div>
+  <div class="section-title">Video del proyecto</div>
+  <div class="card">
+    <p>Mira el funcionamiento del brazo hidráulico en acción en el siguiente enlace:</p>
+    <a class="video-link" href="https://youtu.be/P2r9U4wkjcc?si=lzMDVLlY4SfJEXP4" target="_blank">
+      ▶ Ver video en YouTube
+    </a>
+  </div>
+
+  <hr class="divider">
+
+  <!-- BIBLIOGRAPHY -->
+  <div class="section-tag">Bibliografía</div>
+  <div class="section-title">Referencias consultadas</div>
+  <div class="card">
+    <p class="ref">Khan Academy. (s.f.). <em>Fuerza y movimiento</em>. <a href="https://www.khanacademy.org/science/physics/forces-newtons-laws" target="_blank">khanacademy.org</a></p>
+    <p class="ref">The Physics Classroom. (s.f.). <em>Newton's Laws and Motion</em>. <a href="https://www.physicsclassroom.com/class/newtlaws" target="_blank">physicsclassroom.com</a></p>
+    <p class="ref">Serway, R. & Jewett, J. (2014). <em>Physics for Scientists and Engineers</em>. Cengage Learning.</p>
+    <p class="ref">Norton, R. L. (2011). <em>Machine Design: An Integrated Approach</em>. Prentice Hall.</p>
+  </div>
+
+</main>
+
+<footer>
+  <strong>Universidad de La Guajira</strong> · Facultad de Ingeniería · Ingeniería de Sistemas<br>
+  Calle 16 No. 28ª-80, Maicao, La Guajira · ingenieriamaicao@uniguajira.edu.co<br><br>
+  V Feria de Ciencias IIPA 2026 · Docente: Remberto Paternina Barboza
+</footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<script>
+  const pageUrl = window.location.href;
+  const qr = new QRCode(document.getElementById("qrCanvas"), {
+    text: pageUrl,
+    width: 140,
+    height: 140,
+    colorDark: "#0d3b6e",
+    colorLight: "#ffffff",
+    correctLevel: QRCode.CorrectLevel.H
+  });
+</script>
+</body>
+</html>
